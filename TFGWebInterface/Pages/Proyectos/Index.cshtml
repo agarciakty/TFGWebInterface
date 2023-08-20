@@ -1,0 +1,36 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Proyectos.IndexModel
+@{
+    ViewData["Title"] = "Proyectos";
+}
+
+<br>
+<br>
+<h1> LISTADO DE PROYECTOS </h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>NOMBRE</th>
+            <th>FECHA DE INICIO</th>
+            <th>CLIENTE</th>
+            <th>ESTADO</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.proys.Rows)
+        {
+            <tr>
+                <td>@row[1].ToString()</td>
+                <td>@row[2].ToString()</td>
+                <td>@row[3].ToString()</td>
+                <td>@row[4].ToString()</td>
+                <td><a class="btn btn-primary btn-sm" href="/Proyectos/infoProy?id=@row[0].ToString()"> DETALLES </a></td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>

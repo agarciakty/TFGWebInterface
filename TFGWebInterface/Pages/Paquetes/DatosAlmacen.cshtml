@@ -1,0 +1,110 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Paquetes.DatosAlmacenModel
+@{
+    ViewData["Title"] = "Datos de Almacén";
+}
+
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> Nº ALMACÉN</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="id" value="@Model.idAlmacen" readonly="readonly">
+
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> NOMBRE</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="nombre" value="@Model.nombre" readonly="readonly">
+
+    </div>
+</div>
+
+<h3> PAQUETES EN STOCK </h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>PAQUETE</th>
+            <th>LOCALIZACIÓN</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (DataRow row in Model.paquetes.Rows)
+        {
+            <tr>
+                <td>@row["n_paquete"].ToString()</td>
+                <td>@row["parcela"].ToString()</td>
+
+                <td><a class="btn btn-primary btn-sm" href="/Paquetes/infoPaquete?paquete=@row["n_paquete"].ToString()"> HISTORIAL </a></td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+<h3> PARCELAS </h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>NAVE</th>
+            <th>FILA</th>
+            <th>COLUMNA</th>
+            <th>MOVIMIENTOS DE STOCK</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (DataRow row in Model.parcelas.Rows)
+        {
+            <tr>
+                <td>@row["NAVE"].ToString()</td>
+                <td>@row["FILA"].ToString()</td>
+                <td>@row["COLUMNA"].ToString()</td>
+                <td>@row["MOVIMIENTOS TOTALES"].ToString()</td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+
+<br>
+<br>
+<h3> NUEVA PARCELA </h3>
+<form method="post">
+    <div class="row mb-3" style="float:left">
+        <label class="col-sm-3 col-form-label"> NAVE</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="nave" value="" >
+
+        </div>
+    </div>
+    <div class="row mb-3" style="float:left">
+        <label class="col-sm-3 col-form-label"> FILA</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="fila" value="" >
+
+        </div>
+    </div>
+    <div class="row mb-3" style="float:left">
+        <label class="col-sm-3 col-form-label"> COLUMNA</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="columna" value="">
+
+        </div>
+    </div>
+
+    <input type="text" class="form-control" name="id" value="@Model.idAlmacen" readonly="readonly" hidden="hidden">
+    <input type="text" class="form-control" name="nombre" value="@Model.nombre" readonly="readonly" hidden="hidden">
+
+    <div class="btn btn-primary btn-sm">
+        <button type="submit" class="btn bt-primary" style="color:white"> AÑADIR PARCELA</button>
+    </div>
+
+</form>

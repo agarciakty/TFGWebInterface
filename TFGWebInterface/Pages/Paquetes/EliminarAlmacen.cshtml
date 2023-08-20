@@ -1,0 +1,25 @@
+﻿@page
+@using System.Data.SqlClient;
+@model TFGWebInterface.Pages.Paquetes.EliminarAlmacenModel
+@{
+    try
+    {
+        string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=tfgdb;Integrated Security=True";
+
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            conn.Open();
+            string sqlstr = "DELETE FROM ALMACENES WHERE COD_ALMACEN = " + Request.Query["almacen"];
+            using (SqlCommand cmd = new SqlCommand(sqlstr, conn))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+
+    Response.Redirect("/Paquetes/Almacenes");
+}

@@ -1,0 +1,84 @@
+﻿@page
+@using System.Data.SqlClient;
+@using System.Data;
+@model TFGWebInterface.Pages.Paquetes.InfoPaqueteModel
+@{
+    ViewData["Title"] = "Historial de paquete";
+}
+
+<br>
+<h1> HISTORIAL DE PAQUETE </h1>
+
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> CÓDIGO DE PAQUETE</label>
+    <div class="col-sm-6">
+        @Model.paquete
+
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> FECHA DE ENTRADA ORIGINAL</label>
+    <div class="col-sm-6">
+        @Model.datosParcelas.Rows[Model.datosParcelas.Rows.Count-1][1]
+
+    </div>
+</div>
+<br>
+<br>
+
+<h3> CONTENIDO </h3>
+<table class="table" >
+    <thead>
+        <tr>
+            <th>ARTÍCULO MP</th>
+            <th>CANTIDAD ORIGINAL</th>
+            <th>CANTIDAD ACTUAL</th>
+
+        </tr>
+    </thead>
+    <tbody>
+            
+            @foreach (DataRow row in Model.contenido.Rows)
+            {
+                <tr>
+                <td>@row["ARTICULO"].ToString()</td>
+                <td>@row["CANTIDAD"].ToString()</td>
+                <td>@row["CANTIDAD_REAL"].ToString()</td>
+                </tr>
+            }
+
+            
+
+
+    </tbody>
+</table>
+
+<h3> HISTORIAL DE UBICACIONES </h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>PARCELA</th>
+            <th>ALMACÉN</th>
+            <th>FECHA DE REGISTRO</th>
+            <th>ESTADO</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (DataRow row in Model.datosParcelas.Rows)
+        {
+            <tr>
+                <td>@row["PARCELA"].ToString()</td>
+                <td>@row["ALMACEN"].ToString()</td>
+                <td>@row["FECHA"].ToString()</td>
+                <td>@row["ESTADO"].ToString()</td>
+            </tr>
+        }
+
+
+
+
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@page
+@model TFGWebInterface.Pages.Stock.IndexModel
+@{
+    ViewData["Title"] = "Lista completa de Materia Prima";
+}
+
+<br>
+<h1> LISTADO DE ARTÍCULOS </h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CÓDIGO</th>
+            <th>DENOMINACIÓN</th>
+            <th>CATEGORÍA</th>
+            <th>PROVEEDOR</th>
+            <th>STOCK</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var art in Model.articulos)
+        {
+            <tr>
+                <td>@art.codigo</td>
+                <td>@art.denomi</td>
+                <td>@art.catego</td>
+                <td>@art.proveedor</td>
+                <td>@art.stock</td>
+                <td><a class="btn btn-primary btn-sm" href="/Stock/Datos?id=@art.ID"> DATOS </a></td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>

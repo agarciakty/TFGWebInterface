@@ -1,0 +1,48 @@
+﻿@page
+@using System.Data.SqlClient;
+@using System.Data;
+@model TFGWebInterface.Pages.Paquetes.NuevoAlmacenModel
+@{
+    ViewData["Title"] = "Nuevo Almacén";
+}
+
+
+<br>
+<h1> DATOS DE ALMACÉN </h1>
+@if (Model.creado)
+{
+    <div class="alert alert-success alert-dismissible faed show" role="alert">
+        <strong> Datos guardados</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+@if (Model.error)
+{
+    <div class="alert alert-warning alert-dismissible faed show" role="alert">
+        <strong> Es necesario rellenar todos los campos</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+<form method="post">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> Nº ALMACÉN</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="id" value="">
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> NOMBRE</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="nombre" value="">
+
+        </div>
+    </div>
+
+    <div class="btn btn-primary btn-sm">
+        <button type="submit" class="btn bt-primary" style="color:white"> CONFIRMAR CAMBIOS</button>
+    </div>
+
+</form>

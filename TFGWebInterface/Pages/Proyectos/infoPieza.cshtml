@@ -1,0 +1,87 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Proyectos.infoPiezaModel
+@{
+    ViewData["Title"] = "Detalles de Pieza";
+}
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> PIEZA</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="nombre" value="@Model.datospieza.Rows[0][0].ToString()" readonly="readonly">
+
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> DESCRIPCIÓN</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="desc" value="@Model.datospieza.Rows[0][1].ToString()" readonly="readonly">
+
+    </div>
+</div>
+
+@if(Model.piezas.Rows.Count != 0)
+{
+    
+<h3> COMPONENTES DE PIEZA </h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>PIEZA</th>
+            <th>DESCRIPCIÓN</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (DataRow row in Model.piezas.Rows)
+        {
+            <tr>
+                <td>@row["CODIGO"].ToString()</td>
+                <td>@row["DESCRIPCION"].ToString()</td>
+
+                <td><a class="btn btn-primary btn-sm" href="/Proyectos/infoPieza?pieza=@row["CODIGO"].ToString()&proyecto=@Model.idProy"> DETALLES </a></td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+}
+
+@if (Model.oper.Rows.Count != 0)
+{
+
+    <h3> OPERACIONES DE FABRICACIÓN DE PIEZA </h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OPERACIÓN</th>
+                <th>MATERIA PRIMA</th>
+                <th>OPERARIO ASIGNADO</th>
+                <th>ESTADO</th>
+                <th>INICIO DE FABRICACIÓN</th>
+                <th>FIN DE FABRICACIÓN</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (DataRow row in Model.oper.Rows)
+            {
+                <tr>
+                    <td>@row[0].ToString()</td>
+                    <td>@row[1].ToString()</td>
+                    <td>@row[2].ToString()</td>
+                    <td>@row[3].ToString()</td>
+                    <td>@row[4].ToString()</td>
+                    <td>@row[5].ToString()</td>
+
+                    <td><a class="btn btn-primary btn-sm" href="../Stock/Datos?id=@row[6].ToString()"> INFO MATERIA PRIMA </a></td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+}

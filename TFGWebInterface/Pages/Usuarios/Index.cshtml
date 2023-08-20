@@ -1,0 +1,37 @@
+﻿@page
+@model TFGWebInterface.Pages.Usuarios.IndexModel
+@{
+    ViewData["Title"] = "Datos de usuarios";
+}
+
+
+<br>
+<h1> USUARIOS DE SISTEMA </h1>
+
+ <a class="btn btn-primary btn-sm" href="/Usuarios/Nuevo"> NUEVO USUARIO </a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>USUARIO</th>
+            <th>E-MAIL</th>
+            <th>OPCIONES</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model.Usuarios)
+        {
+            <tr>
+                <td>@user.usuario</td>
+                <td>@user.email</td>
+
+                <td>
+                    <a class="btn btn-primary btn-sm" href="/Usuarios/Datos?usuario=@user.usuario"> EDITAR </a>
+                    <a class="btn btn-primary btn-sm " href="/Usuarios/Eliminar?usuario=@user.usuario" style="background-color:red; color:white"> ELIMINAR </a>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

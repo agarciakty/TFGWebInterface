@@ -1,0 +1,37 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Paquetes.AlmacenesModel
+@{
+    ViewData["Title"] = "Lista de Almacenes";
+}
+
+<br>
+<h1> ALMACENES </h1>
+
+<a class="btn btn-primary btn-sm" href="/Paquetes/NuevoAlmacen"> NUEVO ALMACÉN </a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nº ALMACÉN</th>
+            <th>NOMBRE</th>
+            <th>OPCIONES</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.listaAlmacenes.Rows)
+        {
+            <tr>
+                <td>@row[0].ToString()</td>
+                <td>@row[1].ToString()</td>
+
+                <td>
+                    <a class="btn btn-primary btn-sm" href="/Paquetes/DatosAlmacen?almacen=@row[0].ToString()&nombre=@row[1].ToString()"> DATOS </a>
+                    <a class="btn btn-primary btn-sm " href="/Paquetes/EliminarAlmacen?almacen=@row[0].ToString()" style="background-color:red; color:white"> ELIMINAR </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

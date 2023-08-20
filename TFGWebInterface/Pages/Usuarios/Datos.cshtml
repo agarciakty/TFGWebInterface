@@ -1,0 +1,128 @@
+﻿@page
+@using System.Data;
+@using System.Data.SqlClient;
+@model TFGWebInterface.Pages.Usuarios.DatosModel
+@{
+    ViewData["Title"] = "Detalles y permisos";
+
+}
+
+
+<br>
+<h1> DATOS DE USUARIO </h1>
+@if (Model.actualizado)
+{
+    <div class="alert alert-success alert-dismissible faed show" role="alert">
+        <strong> Datos guardados</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+@if (Model.error)
+{
+    <div class="alert alert-warning alert-dismissible faed show" role="alert">
+        <strong> Es necesario rellenar todos los campos</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+<form method="post">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> USUARIO</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="usuario" value="@Model.datosUs.usuario" readonly="readonly">
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> EMAIL</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="email" value="@Model.datosUs.email">
+
+        </div>
+    </div>
+
+    <h2> Permisos </h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>APLICACIÓN</th>
+                <th>DEPARTAMENTO</th>
+                <th>CONCEDIDO</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @try
+            {
+                string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=tfgdb;Integrated Security=True";
+
+                List<string> listaPermi = new List<string>();
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string sqlstr = "select app from PERMISOS_APPS where USUARIO = '" + Model.datosUs.usuario + "'";
+                    using (SqlCommand cmd = new SqlCommand(sqlstr, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                listaPermi.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+
+                    string strsql = "select ID_APP AS ID, NOMBRE_APP AS APLICACIÓN, dpt.nombre as DEPARTAMENTO from APPS app left join rrhh_db.dbo.DEPARTAMENTOS dpt on dpt.id = app.DEPTO";
+
+                    SqlCommand cmd2 = new SqlCommand(strsql, conn);
+
+                    using (SqlDataAdapter a = new SqlDataAdapter(cmd2))
+                    {
+                        a.Fill(Model.apps);
+                    }
+
+                    conn.Close();
+
+                    foreach (DataRow row in Model.apps.Rows)
+                    {
+                        <tr>
+                            <td>@row["ID"].ToString()</td>
+                            <td>@row["APLICACIÓN"].ToString()</td>
+                            <td>@row["DEPARTAMENTO"].ToString()</td>
+
+                    
+
+                            <td>
+                                @if (listaPermi.Contains(row["ID"].ToString()))
+                                {
+                                    <input type="checkbox" name="permisosCheck" value="@row["ID"].ToString()" checked ="checked">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="permisosCheck" value="@row["ID"].ToString()" >
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            
+        </tbody>
+    </table>
+
+    <div class="btn btn-primary btn-sm">
+        <button type="submit" class="btn bt-primary" style="color:white" > CONFIRMAR CAMBIOS</button>
+    </div>
+    
+</form>
+

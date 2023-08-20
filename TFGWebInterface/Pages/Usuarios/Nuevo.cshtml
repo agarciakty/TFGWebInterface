@@ -1,0 +1,108 @@
+﻿@page
+@using System.Data;
+@using System.Data.SqlClient;
+@model TFGWebInterface.Pages.Usuarios.NuevoModel
+@{
+    ViewData["Title"] = "Usuario nuevo";
+}
+
+<br>
+<h1> DATOS DE USUARIO </h1>
+@if (Model.creado)
+{
+    <div class="alert alert-success alert-dismissible faed show" role="alert">
+        <strong> Nuevo usuario creado. Contraseña autogenerada: @Model.passGenerada</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+@if (Model.error)
+{
+    <div class="alert alert-warning alert-dismissible faed show" role="alert">
+        <strong> Es necesario rellenar todos los campos</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="CERRAR"></button>
+    </div>
+}
+
+
+
+<form method="post">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> USUARIO</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="usuario" value="@Model.datosUs.usuario">
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label"> EMAIL</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="email" value="@Model.datosUs.email">
+
+        </div>
+    </div>
+
+    <h2> Permisos </h2>
+    <table class="table" >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>APLICACIÓN</th>
+                <th>DEPARTAMENTO</th>
+                <th>CONCEDIDO</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @try
+            {
+                string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=tfgdb;Integrated Security=True";
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string strsql = "select ID_APP AS ID, NOMBRE_APP AS APLICACIÓN, dpt.nombre as DEPARTAMENTO from APPS app left join rrhh_db.dbo.DEPARTAMENTOS dpt on dpt.id = app.DEPTO";
+
+                    SqlCommand cmd = new SqlCommand(strsql, conn);
+
+                    using (SqlDataAdapter a = new SqlDataAdapter(cmd))
+                    {
+                        a.Fill(Model.apps);
+                    }
+
+                    foreach (DataRow row in Model.apps.Rows)
+                    {
+                        <tr>
+                            <td>@row["ID"].ToString()</td>
+                            <td>@row["APLICACIÓN"].ToString()</td>
+                            <td>@row["DEPARTAMENTO"].ToString()</td>
+
+                            <td>
+                                <input type="checkbox" name="permisosCheck" value="@row["ID"].ToString()">
+                            </td>
+
+                        </tr>
+                    }
+
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
+            
+            
+            
+            
+        </tbody>
+    </table>
+
+        <div class="btn btn-primary btn-sm">
+            <button type="submit" class="btn bt-primary" style="color:white"> CREAR USUARIO</button>
+        </div>
+
+</form>
+

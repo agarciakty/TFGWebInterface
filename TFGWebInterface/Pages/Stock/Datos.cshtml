@@ -1,0 +1,109 @@
+﻿@page
+@using System.Data;
+@using System.Data.SqlClient;
+@model TFGWebInterface.Pages.Stock.DatosModel
+@{
+    ViewData["Title"] = "Detalles de artículo";
+
+}
+
+
+<br>
+<h1> DATOS DE ARTÍCULO </h1>
+
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> CÓDIGO</label>
+    <div class="col-sm-6">
+        @Model.datosArt.ID
+
+    </div>
+</div>
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> DESCRIPCIÓN</label>
+    <div class="col-sm-6">
+        @Model.datosArt.denomi
+
+    </div>
+</div>
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> CATEGORÍA</label>
+    <div class="col-sm-6">
+        @Model.datosArt.catego
+
+    </div>
+</div>
+<br>
+<br>
+
+    <h2> PAQUETES CON STOCK </h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PAQUETE</th>
+                <th>CANTIDAD ACTUAL</th>
+                <th>FECHA DE ENTRADA</th>
+                <th>PARCELA ACTUAL</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @try
+            {
+                string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=tfgdb;Integrated Security=True";
+
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+
+                    string strsql = "select PAQUETE, CANTIDAD_REAL as [CANTIDAD ACTUAL], convert(varchar, pmp.FECHA_C, 113) as [FECHA DE ENTRADA], (SELECT top(1) PARCELA FROM PAQUETES_ENTRADA_ALMACEN WHERE PAQUETE = pmp.PAQUETE order by FECHA_C desc) as PARCELA from PAQUETES_MP pmp where ARTICULO = (SELECT CODIGO FROM ARTICULOS_MP WHERE ID = " + Model.datosArt.ID + ")";
+
+                    SqlCommand cmd2 = new SqlCommand(strsql, conn);
+
+                    using (SqlDataAdapter a = new SqlDataAdapter(cmd2))
+                    {
+                        a.Fill(Model.datosparcelas);
+                    }
+
+                    conn.Close();
+
+                    
+
+                    @foreach(DataRow row in Model.datosparcelas.Rows)
+                    {
+                    <tr>
+                        <td>@row["PAQUETE"].ToString()</td>
+                        <td>@row["CANTIDAD ACTUAL"].ToString()</td>
+                        <td>@row["FECHA DE ENTRADA"].ToString()</td>
+                        <td>@row["PARCELA"].ToString()</td>
+                        <td><a class="btn btn-primary btn-sm" href="../Paquetes/InfoPaquete?paquete=@row["PAQUETE"].ToString()"> HISTORIAL </a></td>
+                    </tr>
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            
+        </tbody>
+    </table>
+
+<br>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> STOCK TOTAL</label>
+    <div class="col-sm-6" style="font:bold">
+        @Model.datosArt.stock
+
+    </div>
+</div>
+
+    
+    
+

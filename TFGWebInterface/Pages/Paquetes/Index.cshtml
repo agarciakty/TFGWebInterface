@@ -1,0 +1,42 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Paquetes.IndexModel
+@{
+    ViewData["Title"] = "Lista completa de Paquetes";
+}
+
+<br>
+<div class="btn btn-primary btn-sm" >
+
+    <a class="nav-link" style="color:white" asp-area="" asp-page="/Paquetes/Almacenes">GESTIÓN DE ALMACENES</a>
+</div>
+
+<br>
+<br>
+<h1> LISTADO DE PAQUETES </h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>PAQUETE</th>
+            <th>ARTÍCULOS EN PAQUETE</th>
+            <th>LOCALIZACIÓN ACTUAL</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.datospaqs.Rows)
+        {
+            <tr>
+                <td>@row[0].ToString()</td>
+                <td>@row[1].ToString()</td>
+                <td>@row[2].ToString()</td>
+                <td><a class="btn btn-primary btn-sm" href="/Paquetes/infoPaquete?paquete=@row[0].ToString()"> HISTORIAL </a></td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+

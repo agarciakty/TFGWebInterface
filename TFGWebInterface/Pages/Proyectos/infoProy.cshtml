@@ -1,0 +1,54 @@
+﻿@page
+@using System.Data;
+@model TFGWebInterface.Pages.Proyectos.infoProyModel
+@{
+
+    ViewData["Title"] = "Detalles de Proyecto";
+}
+
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> PROYECTO</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="nombre" value="@Model.datosproy.Rows[0][1].ToString()" readonly="readonly">
+
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> DESCRIPCIÓN</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="desc" value="@Model.datosproy.Rows[0][2].ToString()" readonly="readonly">
+
+    </div>
+</div>
+<div class="row mb-3">
+    <label class="col-sm-3 col-form-label"> CLIENTE</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="cli" value="@Model.datosproy.Rows[0][5].ToString()" readonly="readonly">
+
+    </div>
+</div>
+
+<h3> ESTRUCTURA DE PIEZAS DE PROYECTO </h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>PIEZA</th>
+            <th>DESCRIPCIÓN</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (DataRow row in Model.piezas.Rows)
+        {
+            <tr>
+                <td>@row["CODIGO"].ToString()</td>
+                <td>@row["DESCRIPCION"].ToString()</td>
+
+                <td><a class="btn btn-primary btn-sm" href="/Proyectos/infoPieza?pieza=@row["CODIGO"].ToString()&proyecto=@Model.idProy"> DETALLES </a></td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
